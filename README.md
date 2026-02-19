@@ -28,7 +28,7 @@ See **PORTABLE-VS-PROJECT.md** for what to copy vs replace.
 | Area | Purpose |
 |------|--------|
 | **specs/** | **Project-specific.** Your spec (`spec/`) and canonical **sprints.yaml** + **tasks.yaml** (from spec). |
-| **.cursor/rules/** | **Portable.** General SWE, SOLID, YAGNI, test-first, 95% coverage, task/sprint conventions. Add more rules over time. |
+| **.cursor/rules/** | **Portable.** General SWE, SOLID, YAGNI, DRY, KISS, Clean Code, composition/coupling, error handling, explicit/immutability, SoC, CQS, least astonishment, SSOT, no premature optimization, encapsulation, DDD, refactoring, test-first, 95% coverage, task/sprint conventions, **vibe coding**, **Cursor/agentic**, **security awareness**. Add more as needed. |
 | **framework/sprints/, framework/tasks/** | **Portable.** Schema and docs for sprint/task YAML (fields, rules). |
 | **framework/work-packages/** | WP template, tech stack decision, module→WP breakdown. |
 | **docs/** | PRD, architecture, module definition templates (portable). |

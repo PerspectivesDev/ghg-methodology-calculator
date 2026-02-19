@@ -1,0 +1,27 @@
+---
+description: Security awareness — input, secrets, and AI-generated code
+alwaysApply: true
+---
+
+# Security Awareness
+
+Apply when handling data, credentials, and AI-generated code. Security must be explicit in requirements and review.
+
+## Input and data
+
+- **Validate and sanitize all external input**: Assume network, file, and user input can be malformed or hostile. Validate type, range, and format at boundaries; sanitize before use (e.g. SQL, HTML, shell). See error-handling rule.
+- **Principle of least privilege**: Access to data and operations only as needed. No broad permissions "for convenience."
+- **Sensitive data**: Don't log, store, or expose secrets, tokens, or PII beyond what's required. Mask in logs and errors.
+
+## Secrets and configuration
+
+- **No secrets in code or repo**: No hardcoded passwords, API keys, or connection strings. Use environment variables, secret managers, or secure config; document where secrets live and how they're loaded.
+- **.env and .gitignore**: Local env files stay out of version control. Provide a .env.example with placeholder keys and document required variables.
+
+## AI-generated code
+
+- **Review for vulnerabilities**: AI can produce vulnerable patterns (injection, broken auth, unsafe deserialization). Review generated code for security before merge; run security linters or scans when available.
+- **State security in the prompt**: When asking for auth, file upload, or external calls, explicitly require validation, parameterization, and safe defaults. Don't assume the model will add security by default.
+- **Dependencies**: Prefer well-maintained, widely used packages. Review or pin versions for sensitive operations. Update for known vulnerabilities.
+
+Summary: Validate input; no secrets in code; review AI output for security; ask for secure behavior explicitly in prompts.

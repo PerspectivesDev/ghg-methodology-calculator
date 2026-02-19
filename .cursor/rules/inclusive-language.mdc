@@ -1,0 +1,13 @@
+---
+description: Inclusive language in code, names, comments, and docs
+alwaysApply: true
+---
+
+# Inclusive Language
+
+- **Names and identifiers**: Avoid terms that are exclusionary, discriminatory, or tied to sensitive historical context (e.g. "master/slave", "blacklist/whitelist", "dummy", "sanity"). Prefer neutral alternatives (e.g. "primary/replica", "allowlist/blocklist", "placeholder", "sanity check" → "validity check" or "consistency check").
+- **Comments and docs**: Use inclusive, professional language. No slang or terms that could offend or exclude. Assume a global, diverse audience.
+- **User-facing text**: Error messages, UI labels, and docs should be clear and inclusive. Avoid assumptions about gender, ability, or background.
+- **When in doubt**: Prefer neutral, descriptive terms. If a term has a well-known inclusive alternative in the industry, use it.
+
+Summary: Neutral, inclusive terms in code, comments, and docs; replace known exclusionary terms with standard alternatives.

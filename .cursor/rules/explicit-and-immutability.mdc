@@ -1,0 +1,20 @@
+---
+description: Explicit over implicit, immutability where practical
+alwaysApply: true
+---
+
+# Explicit over Implicit
+
+- **No magic**: Behavior should be obvious from the code. Avoid hidden defaults, implicit conversions, or "convention" that isn't documented and visible.
+- **Explicit dependencies**: Pass dependencies in (constructors, parameters) rather than resolving them globally or from hidden context. See Dependency Inversion.
+- **Explicit contracts**: Document or type preconditions, postconditions, and side effects. Callers should not have to read the implementation to know what happens.
+- **Configuration over convention**: When behavior varies, make it explicit (config, options) rather than inferring from environment or naming.
+
+# Immutability
+
+- **Prefer immutable data**: Where the language and domain allow, use immutable structures. New state = new value; don't mutate in place. Reduces bugs and makes reasoning easier.
+- **Immutability by default**: Only make something mutable when there's a clear need (e.g. performance, API requirement). Document why.
+- **Copy or derive**: When "changing" state, prefer returning a new copy or derived value rather than mutating. Especially in shared or cross-boundary data.
+- **Const / readonly**: Mark references and data as non-mutable when possible. Enforces intent and catches accidental mutation.
+
+Summary: Be explicit; prefer immutable data and explicit dependencies.

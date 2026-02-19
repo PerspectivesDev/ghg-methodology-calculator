@@ -1,0 +1,14 @@
+---
+description: DRY — Don't Repeat Yourself
+alwaysApply: true
+---
+
+# DRY (Don't Repeat Yourself)
+
+- **One place for each piece of knowledge or logic**: If the same rule, calculation, or behavior appears in more than one place, extract it to a single unit (function, module, constant) and reuse.
+- **Copy-paste is a smell**: Pasting code and tweaking it means the logic is duplicated. Extract and parameterize instead.
+- **Duplication of behavior, not just text**: Two code paths that do the same thing for different types count as duplication—consider abstraction or shared logic.
+- **Data duplication**: Prefer a single source of truth for each fact or state. Derive or look up elsewhere; don't keep the same data in two places and risk divergence.
+- **When in doubt**: If you're about to paste, ask "can this live in one place and be reused?" Refactor when you have two; don't wait for three.
+
+Exception: Duplicate intentionally only when coupling would be worse (e.g. separate domains, different change rates). Document why.

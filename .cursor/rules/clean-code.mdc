@@ -1,0 +1,26 @@
+---
+description: Clean Code — names, functions, readability
+alwaysApply: true
+---
+
+# Clean Code
+
+## Names
+
+- **Reveal intent**: Names should say what something does or represents. Avoid abbreviations unless universal (e.g. `id`, `url`).
+- **Avoid disinformation**: Don't use names that suggest something different (e.g. a list that isn't a list).
+- **Searchable**: Prefer names that are easy to search for. Avoid single-letter names except in tiny scopes (e.g. loop index).
+- **Use domain language**: Prefer terms from the problem domain over generic tech terms when they clarify.
+
+## Functions
+
+- **Small**: Do one thing. If you can extract a named block, consider a separate function.
+- **Few arguments**: Prefer 0–2 arguments. More than 3 is a smell; consider an object or breaking responsibility.
+- **No side effects**: Functions should not change state or call external systems in ways callers don't expect. Name or document any side effect.
+- **One level of abstraction**: Don't mix high-level steps with low-level details in the same function.
+
+## General
+
+- **No magic numbers/strings**: Use named constants or config. The meaning of `0.07` or `"ACTIVE"` should be obvious from the name.
+- **Positive naming**: Prefer `isActive` over `isInactive`; positive conditionals are easier to read.
+- **Formatting**: Consistent indentation, line length, and style. Let the formatter do the work.

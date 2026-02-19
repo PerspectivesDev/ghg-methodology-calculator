@@ -1,0 +1,15 @@
+---
+description: Logging and observability — structured logs, boundaries, no secrets
+alwaysApply: true
+---
+
+# Logging and Observability
+
+- **Log at boundaries**: Log on entry/exit of significant operations (API request, job run, message handled). Include enough context to trace a request or flow. Avoid logging inside tight loops or high-frequency paths unless necessary for debugging.
+- **Structured logs**: Prefer key-value or JSON so logs are queryable (e.g. `level`, `message`, `request_id`, `duration_ms`). Avoid only free-form text.
+- **No secrets in logs**: Never log passwords, tokens, full auth headers, or PII in plain form. Mask or omit. See security-awareness.
+- **Levels**: Use consistent levels (e.g. error for failures, warn for recoverable issues, info for normal flow, debug for diagnostics). Don't log everything at the same level.
+- **Correlation and request id**: When handling requests or distributed work, propagate or generate a request/correlation id and include it in logs and error responses so traces can be tied together.
+- **Errors**: Log errors with context (what was attempted, input summary, error message). Rely on structured fields; avoid huge stack dumps as the only context.
+
+Summary: Structured logs at boundaries; no secrets; include request/correlation id; use levels consistently.

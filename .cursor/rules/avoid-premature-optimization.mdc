@@ -1,0 +1,14 @@
+---
+description: Avoid premature optimization; measure then optimize
+alwaysApply: true
+---
+
+# Avoid Premature Optimization
+
+- **Correct first**: Make the code correct, clear, and maintainable before optimizing. Premature optimization often complicates code and wastes time on the wrong thing.
+- **Measure before optimizing**: Don't guess bottlenecks. Use profiling, metrics, or benchmarks to find real hotspots. Optimize where it matters.
+- **Simple and slow is better than complex and fast**: Prefer straightforward implementations. Replace with a faster or more scalable approach only when there's a proven need (requirement, measurement).
+- **Optimization has a cost**: Optimized code is often harder to read and change. Pay that cost only when the benefit is clear (e.g. proven performance or scale requirement).
+- **Small inefficiencies are OK**: Micro-optimizations (e.g. avoiding one allocation in a cold path) rarely matter. Focus on algorithms, I/O, and hot paths when you have data.
+
+Quote to remember: "Premature optimization is the root of all evil" (Knuth)—in context: optimize the 3% that matters, not the 97% that doesn't. Measure first.

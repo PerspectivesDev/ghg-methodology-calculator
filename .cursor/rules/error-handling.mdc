@@ -1,0 +1,27 @@
+---
+description: Error handling, fail fast, validation at boundaries
+alwaysApply: true
+---
+
+# Error Handling
+
+## Fail fast
+
+- **Validate at boundaries**: Check inputs at the edge (API, public API, constructor). Reject invalid state as soon as it enters. Don't let bad data propagate.
+- **Explicit preconditions**: Document or assert preconditions. If a function assumes non-null or valid range, make it explicit and fail early when violated.
+- **No silent continuation**: When something is wrong, fail or return an error. Don't return a default and continue as if nothing happened unless that's a defined contract.
+
+## Errors are visible
+
+- **Don't swallow**: Empty catch blocks or ignored return values hide bugs. At minimum log; preferably propagate or handle.
+- **Structured errors**: Use typed errors or error codes when possible. Callers should be able to distinguish and handle different failures.
+- **Context**: Include enough context in errors or logs (e.g. input summary, operation) so failures are debuggable. Avoid only "Something went wrong."
+
+## Boundaries
+
+- **External input is untrusted**: Validate and sanitize all input from network, files, or users. Assume it can be malformed or hostile.
+- **Return clear errors to callers**: API errors should be actionable (e.g. "Invalid format for field X" not "Error"). HTTP: use appropriate status codes and body.
+
+## Summary
+
+- Validate early; fail fast with clear errors. No silent swallows. Log or propagate with context.

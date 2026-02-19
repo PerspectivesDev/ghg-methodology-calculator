@@ -1,0 +1,36 @@
+---
+description: Domain-Driven Design (DDD) — when the domain is complex or DDD is chosen
+alwaysApply: true
+---
+
+# Domain-Driven Design (DDD)
+
+Use DDD when the **domain is complex**, the **problem is not just CRUD**, or the team has **chosen DDD**. For simple apps, the existing rules (SoC, boundaries, SOLID) are enough; DDD adds structure and vocabulary.
+
+## Ubiquitous language
+
+- **One language for domain and code**: Terms used in the product, specs, and conversations are the same as in the code (types, methods, modules). No "user" in the spec and "Account" in the code without a clear mapping.
+- **Names from the domain**: Prefer domain terms over generic tech names. If the business says "Order" and "Line Item," use those; avoid "Record" and "Detail" unless that's the domain language.
+- **Refine the language**: When a concept is ambiguous, clarify with stakeholders and reflect it in the code. The codebase is a reflection of the shared model.
+
+## Bounded contexts
+
+- **Explicit boundaries**: A bounded context is a boundary within which a single model and language apply. Different contexts can have different models for the "same" concept (e.g. "Order" in sales vs shipping). Don't mix models across context boundaries.
+- **Integrate at boundaries**: Communication between contexts is via well-defined interfaces (API, events, ACL). No direct DB or internal calls across contexts. See anti-corruption layer when integrating with legacy or external systems.
+- **One context per module or suite**: Map modules/subdomains to bounded contexts. Keep the context's model coherent inside; expose only the necessary contract outside.
+
+## Tactical patterns (inside a bounded context)
+
+- **Entities**: Objects with identity that persist over time. Same id = same entity even if attributes change. Model only what the domain cares about.
+- **Value objects**: Described by their attributes; no identity. Immutable. Use for quantities, money, ranges, addresses when identity doesn't matter.
+- **Aggregates**: A cluster of entities and value objects with a root. External references only to the aggregate root. Changes go through the root; invariants are enforced inside the aggregate.
+- **Domain events**: Something that happened in the domain, expressed as a fact (e.g. "OrderPlaced"). Use for cross-aggregate or cross-context communication without tight coupling.
+- **Repositories**: Abstraction for loading/saving aggregates (or entities). Speak in domain terms ("orderRepository.save(order)"); hide persistence details. One repository per aggregate (or per root) is a common approach.
+- **Domain layer**: Core logic and rules live here. No I/O, no framework. Depends only on itself (and maybe shared kernel). Application layer orchestrates and calls domain; infrastructure implements persistence and external services.
+
+## When to use DDD
+
+- **Complex domain**: Many rules, invariants, and evolving language. DDD helps keep the model clear and testable.
+- **Not necessary for**: Simple CRUD, thin wrappers over a DB, or when the "domain" is trivial. Prefer KISS and YAGNI; introduce DDD when complexity justifies it.
+
+Summary: Same language in spec and code; bounded contexts with clear boundaries; entities, value objects, aggregates, events, repositories inside a context; domain layer pure and central.

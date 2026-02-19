@@ -1,0 +1,40 @@
+---
+description: Cursor and agentic programming — plan, context, prompts (2025–2026)
+alwaysApply: true
+---
+
+# Cursor & Agentic Programming Rules
+
+Use these when working with Cursor's agent, chat, and Composer so the AI stays aligned and efficient.
+
+## Plan before code
+
+- **Plan mode when it helps**: For non-trivial work, use Plan Mode (e.g. Shift+Tab) or ask for a short plan (steps, files, risks) before generating code. Plans give the agent concrete goals and reduce wrong-file or wrong-layer edits.
+- **Structured prompts**: Prefer a clear structure: **Goal**; **Context** (what exists); **Current behavior**; **Desired behavior**; **Acceptance criteria**; **Constraints**. Acceptance criteria anchor the agent and limit unintended changes.
+- **Define "done" up front**: State how you'll verify success (tests, manual steps, metrics). Test-driven agent workflows (write or state tests first, then implement) work well.
+
+## Context and references
+
+- **Let the agent find context when possible**: Rely on the agent's search (grep, codebase search) instead of @-mentioning every file. @ only when you know the exact file or pattern to follow.
+- **Use @ strategically**: Use @ for files, folders, or symbols when you need consistency (e.g. "same pattern as @src/utils/pagination"). Use @Code for a specific function or block. Reference docs or specs when they define contract or behavior.
+- **Token awareness**: Always-apply rules and huge context increase token use. Prefer glob-scoped or agent-requested rules for large codebases. Add only the context needed for the current task.
+- **New conversation for new task**: When switching to a different feature or when responses slow or reference old context incorrectly, start a new chat. Long threads reduce quality.
+
+## Inline vs agent
+
+- **Inline edit**: Single-file changes, small refactors, obvious bug fixes. Stay in flow; minimal context.
+- **Agent / Composer**: Multi-file changes, new features, cross-cutting refactors, or when you want the agent to search and reason. Give goal + acceptance criteria + constraints.
+
+## Reducing hallucinations
+
+- **State assumptions**: Ask the agent to list assumptions before writing code when the change is subtle or critical. Correct them in the prompt.
+- **Explicit constraints**: Say what must not change (e.g. "do not modify the public API of X"). Include a snippet of current behavior when the contract is easy to get wrong.
+- **Show work for critical paths**: For multi-step or business-critical logic, ask the agent to show reasoning or steps before applying changes. Validate the plan, then apply.
+- **Provide current behavior**: When changing existing code, briefly state or point to current behavior so the agent doesn't infer a wrong design.
+
+## Consistency
+
+- **Reusable prompt templates**: Keep templates for common tasks (e.g. "add test for X", "refactor Y to use Z") in a `/prompts` or `agents/prompts` folder. Standardize Goal / Context / Criteria so the agent gets consistent structure.
+- **Specs and tasks as source of truth**: Point the agent at `specs/tasks.yaml` and the active task so it stays aligned with the plan. Test_ref and definition_of_done are the acceptance criteria.
+
+Summary: Plan or structure the ask; give clear acceptance criteria; use @ when you need consistency; new convo for new scope; prefer agent for multi-file work; constrain and verify to avoid hallucinations.

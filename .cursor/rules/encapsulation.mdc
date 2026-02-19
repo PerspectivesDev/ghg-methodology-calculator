@@ -1,0 +1,14 @@
+---
+description: Encapsulation — hide implementation, expose contract
+alwaysApply: true
+---
+
+# Encapsulation
+
+- **Hide implementation details**: Expose only what callers need (public API, interface). Internal data structures, helpers, and state are private or internal. Callers depend on behavior, not internals.
+- **Minimize surface area**: The smaller the public surface, the more freedom you have to change implementation without breaking callers. Add to the public API only when there's a real use case.
+- **State is internal**: Don't expose mutable state directly (e.g. getters that return internal collections callers can modify). Provide behavior (methods) or return copies/views as needed.
+- **Invariants are your responsibility**: The unit that owns data is responsible for keeping it valid. Validate on the way in; don't rely on callers to maintain your invariants.
+- **Leaky abstraction is a smell**: If callers must know how you store or compute something to use you correctly, the abstraction is leaking. Fix the API or the abstraction.
+
+Works with: Dependency Inversion (depend on abstractions), Interface Segregation (small interfaces), Law of Demeter (don't reach inside).

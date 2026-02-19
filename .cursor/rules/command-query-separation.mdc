@@ -1,0 +1,19 @@
+---
+description: Command-Query Separation (CQS)
+alwaysApply: true
+---
+
+# Command-Query Separation (CQS)
+
+- **Commands change state; queries return data**: A **command** performs an action (create, update, delete, send) and returns void or a minimal acknowledgment (e.g. id). A **query** returns data and does not change observable state.
+- **Don't mix in one call**: A method should either change state or return data, not both in a way that makes the return value depend on the state change. Avoid "save and return the updated entity" if the return is the main contract; prefer "save" then "get" if callers need the result.
+- **Idempotency of queries**: Calling a query multiple times with the same input should be safe and not change state. Queries are read-only.
+- **Naming**: Prefer names that signal intent—commands as verbs (e.g. `createUser`, `publishEvent`), queries as nouns or getters (e.g. `getUserById`, `findActiveOrders`).
+
+## Benefits
+
+- Easier reasoning: no hidden state change when you're "just reading."
+- Safer concurrency and caching: queries can be cached or parallelized without worrying about side effects.
+- Clearer APIs: callers know what mutates and what doesn't.
+
+Exception: When the API or framework requires a single call that both mutates and returns (e.g. "insert and return id"), document it and keep the mutation and return contract explicit.

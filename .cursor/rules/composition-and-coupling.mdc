@@ -1,0 +1,23 @@
+---
+description: Composition over inheritance, Law of Demeter, loose coupling
+alwaysApply: true
+---
+
+# Composition and Coupling
+
+## Composition over inheritance
+
+- **Prefer composition**: Build behavior by combining small, focused units (has-a) rather than inheriting (is-a) when both are possible.
+- **Inheritance when it's true "is-a"**: Use inheritance when the subtype is a genuine specialization and Liskov holds. Avoid deep hierarchies.
+- **Delegation**: When you need behavior from elsewhere, inject or hold a reference and delegate. Don't inherit just to reuse code.
+
+## Law of Demeter (loose coupling)
+
+- **Talk to friends, not strangers**: A unit should only use its own members, parameters, or objects it created. Avoid chaining through multiple objects (e.g. `a.getB().getC().doSomething()`).
+- **Shallow call chains**: Prefer one level of navigation. If you need something deep, provide a method or facade on the direct dependency.
+- **Reduces coupling**: Callers depend on one abstraction, not the whole chain. Changes in the middle don't break the caller.
+
+## Summary
+
+- Prefer "has-a" and small interfaces over "is-a" and deep trees.
+- Don't reach through multiple objects; ask the direct dependency for what you need.

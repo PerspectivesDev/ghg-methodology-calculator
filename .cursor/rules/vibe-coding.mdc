@@ -1,0 +1,30 @@
+---
+description: Vibe coding best practices — AI-assisted development (2025–2026)
+alwaysApply: true
+---
+
+# Vibe Coding Best Practices
+
+Vibe coding: describe outcomes in natural language, AI generates code, you iterate and verify. These practices keep quality and control high.
+
+## Workflow
+
+- **Start simple, build incrementally**: Break work into small, testable steps. One feature or task at a time. Don't ask the AI for the whole system in one go.
+- **Describe outcome then iterate**: Give a clear goal and context; generate; review; refine with specific prompts. Iterative refinement beats one-shot perfection.
+- **Test continuously**: Run tests (and edge cases) right after generation. Catch regressions and wrong assumptions early. Test before moving to the next chunk.
+- **Version control discipline**: Commit at each working state with descriptive messages. Use git reset or revert when the AI goes off track. Clean history helps the next prompt.
+
+## Prompts and context
+
+- **Clear, specific prompts**: Include requirements, edge cases, data types, and constraints. "Precisely vague" = enough context for good output, room for sensible choices. Vague alone = random output.
+- **Security and quality in the prompt**: State security and quality expectations upfront (e.g. "validate input", "no secrets in code"). Don't assume the AI will add them unless asked.
+- **Fresh conversations for new features**: Start a new chat when switching to a different feature or when context feels bloated. Long threads degrade relevance and increase confusion.
+- **Use examples and references**: Point to existing code, patterns, or docs with @ references. "Like X but for Y" is more reliable than a long prose description.
+
+## Human oversight
+
+- **Review before merge**: Always review AI-generated code. Understand what it does and whether it matches requirements and standards. No "black box" merges.
+- **You own the design**: You direct strategy and architecture; the AI suggests implementations. When in doubt, you decide; then prompt for the change.
+- **Quality gates**: Run linters, tests, and (when applicable) security checks. Fix or reject output that doesn't pass. Human verification is part of the definition of done.
+
+Summary: Small steps, clear prompts, test and commit often, new convos for new scope, always review. You stay in control; AI accelerates implementation.

@@ -1,0 +1,20 @@
+---
+description: Separation of concerns, layered design
+alwaysApply: true
+---
+
+# Separation of Concerns (SoC)
+
+- **One concern per unit**: Each module, layer, or component should have a single, clear concern. UI, business logic, data access, and infrastructure are separate concerns.
+- **Layers don't skip**: Higher layers call downward (e.g. UI → application → domain → data). Don't let UI talk directly to the database or vice versa through a hidden path.
+- **No mixing in one place**: Don't put SQL, business rules, and HTML in the same file or function. Split by concern; keep each unit focused.
+- **Boundaries are explicit**: Communication between layers is via defined interfaces (API, repository interface, events). No reaching through layers for implementation details.
+
+## Practical split
+
+- **Presentation**: Display and user input only. No business rules or direct data access.
+- **Application / use cases**: Orchestrate workflows, call domain and data. Thin if domain is rich.
+- **Domain**: Core logic and rules. No UI, no I/O details. Pure where possible.
+- **Data / infrastructure**: Persistence, external services, file system. Implement interfaces defined by application or domain.
+
+When adding behavior, ask: which layer owns this? Keep it there.

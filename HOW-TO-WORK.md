@@ -36,7 +36,7 @@ Step-by-step guide to build **any** application using this scaffolding. No tech 
    Define this in your spec (e.g. `src/`, `app/`, `backend/`, `frontend/`—whatever your stack and structure require). This repo does not assume any layout.
 
 5. **Cursor rules**  
-   They apply automatically (SOLID, YAGNI, test-first, 95% coverage). Add stack-specific rules under `.cursor/rules/` with `globs` if you want.
+   They apply automatically: SWE principles (SOLID, DRY, KISS, etc.), test-first, 95% coverage, **vibe coding**, **Cursor/agentic** (plan, context, prompts), and **security awareness**. Add stack-specific rules under `.cursor/rules/` with `globs` if you want.
 
 ---
 

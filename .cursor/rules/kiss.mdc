@@ -1,0 +1,14 @@
+---
+description: KISS — Keep It Simple, Stupid
+alwaysApply: true
+---
+
+# KISS (Keep It Simple, Stupid)
+
+- **Simplest solution that works**: Prefer the least complex design and implementation that meets the requirement. Avoid unnecessary abstraction, indirection, or generality.
+- **Readability over cleverness**: Code is read more than written. Clear and straightforward beats clever and concise when they conflict.
+- **One level of abstraction at a time**: Don't mix high-level orchestration with low-level details in the same unit. Keep each function at a single level.
+- **Avoid speculative generality**: Don't add parameters, options, or layers "for flexibility" until you have a concrete second use case. See YAGNI.
+- **Names and structure**: If you need a long comment or a complex name to explain it, simplify the code instead.
+
+When choosing between two approaches, prefer the one that is easier to understand and change.

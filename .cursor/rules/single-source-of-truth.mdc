@@ -1,0 +1,14 @@
+---
+description: Single Source of Truth (SSOT)
+alwaysApply: true
+---
+
+# Single Source of Truth (SSOT)
+
+- **One canonical place for each fact**: For every piece of data or state that matters (entity id, config, status), one place owns it. Others derive, reference, or subscribe—they don't duplicate the truth.
+- **Derive, don't duplicate**: If the same fact can be computed or fetched from one place, do that instead of storing a second copy. Duplicated truth drifts and causes bugs.
+- **Ownership is clear**: Know who owns what. For shared state (e.g. DB, cache), one system or module is the authority; others go through it. No "I'll keep my own copy and hope it's in sync."
+- **Config and constants**: One place for env, feature flags, and constants. Code reads from there. No scattering the same value across files.
+- **Identifiers and keys**: One source for ids (e.g. DB, identity provider). Don't generate or store the same id in multiple systems without a single authority.
+
+Related: DRY (logic); SSOT focuses on data and state. Both reduce divergence and bugs.

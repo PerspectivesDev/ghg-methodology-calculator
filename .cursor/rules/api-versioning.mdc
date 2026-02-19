@@ -1,0 +1,15 @@
+---
+description: API versioning — when and how to version APIs
+alwaysApply: false
+globs: "**/api/**","**/*Controller*","**/routes/**","**/handlers/**"
+---
+
+# API Versioning
+
+- **Version when**: The API has (or may have) multiple consumers, is public, or is long-lived. One-off internal APIs that you fully control can skip versioning; add it when a second consumer or a breaking change is likely.
+- **Prefer backward-compatible evolution**: Add new fields; make them optional. Avoid removing or renaming fields; if you must, introduce a new version. Document deprecation and sunset for old versions.
+- **Version in one place**: Use URL path (e.g. `/v1/`, `/v2/`) or header (e.g. `Accept: application/vnd.api+v1`). Don't mix strategies. Document which the API uses.
+- **Contract and docs**: OpenAPI/Swagger (or equivalent) should reflect the version. Callers need to know what each version offers and when it will be deprecated.
+- **Deprecate explicitly**: When introducing a replacement, mark the old endpoint or version as deprecated with a sunset date. Return deprecation headers if possible (e.g. `Deprecation: true`, `Sunset: <date>`).
+
+Summary: Version any API that might break consumers; evolve compatibly when you can; use a single versioning scheme and document it.

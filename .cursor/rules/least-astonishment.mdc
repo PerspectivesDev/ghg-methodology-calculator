@@ -1,0 +1,14 @@
+---
+description: Principle of Least Astonishment (POLA)
+alwaysApply: true
+---
+
+# Principle of Least Astonishment (POLA)
+
+- **Behave as users expect**: Code and APIs should do what a reasonable person would assume from the name and context. Avoid surprising side effects, implicit behavior, or counterintuitive defaults.
+- **Naming matches behavior**: If a function is named `getUser`, it should not create or update a user. If it has a side effect, the name or docs should make that clear.
+- **Consistency**: Similar operations should work similarly across the codebase. Same parameter order, same error style, same naming patterns. Surprise comes from inconsistency.
+- **No hidden side effects**: Calling a function should not change unrelated state or have effects that aren't obvious from the call site. Document or name any non-obvious effect.
+- **Defaults are safe and obvious**: Default values for config or parameters should be the least surprising and safest choice. Prefer "do nothing" or "disabled" over "do something impactful" by default.
+
+When in doubt: would a teammate be surprised? If yes, make it explicit or rename.

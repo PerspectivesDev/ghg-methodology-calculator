@@ -1,0 +1,14 @@
+---
+description: Refactoring — small steps, tests green, no behavior change
+alwaysApply: true
+---
+
+# Refactoring
+
+- **Behavior unchanged**: Refactoring improves structure without changing observable behavior. No new features, no bug "fixes" mixed in—do those in separate steps.
+- **Tests green before and after**: Run the test suite before refactoring. Make one small change, run tests, commit. Repeat. If tests fail, fix or revert the last step.
+- **Small steps**: One rename, one extract, one move at a time. Small steps are easy to reason about and revert. Avoid "big bang" refactors.
+- **Safe mechanics**: Prefer renames and moves that the tooling understands (IDE refactor, linter). When changing signatures, update call sites in a single change set so the codebase stays consistent.
+- **When tests are missing**: Add minimal tests around the behavior you're about to refactor so you have a safety net. Then refactor.
+
+Summary: Change structure only; keep tests green; take small, reversible steps.
