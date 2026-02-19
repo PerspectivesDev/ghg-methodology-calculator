@@ -1,2 +1,0 @@
-[console_scripts]
-ghg-calc = ghg_methodology_calculator.cli:main
