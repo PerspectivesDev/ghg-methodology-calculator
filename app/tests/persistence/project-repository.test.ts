@@ -3,7 +3,7 @@
  * Test-first: create project (name, inputs, factorOverrides), get by id, update,
  * save/load runs, and that schema supports audit records.
  */
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import type { MethodologyResult } from "../../src/domain/methodology-result.js";
 import Database from "better-sqlite3";
 import {
@@ -35,23 +35,34 @@ describe("project-repository (S1.3)", () => {
   });
 
   describe("schema", () => {
-    it("creates projects, runs, and audit tables with columns for inputs, factorOverrides, runs, audit records", () => {
+    it("creates normalized tables for projects, inputs, overrides, methodologies, runs, and audit", () => {
       const tables = db.prepare(
         "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name"
       ).all() as { name: string }[];
       expect(tables.map((t) => t.name)).toEqual(
-        expect.arrayContaining(["projects", "runs", "audit"])
+        expect.arrayContaining([
+          "projects",
+          "project_inputs",
+          "project_factor_overrides",
+          "project_selected_methodologies",
+          "runs",
+          "audit",
+        ])
       );
 
       const projectCols = db.prepare("PRAGMA table_info(projects)").all() as { name: string }[];
       const projectColumnNames = projectCols.map((c) => c.name);
       expect(projectColumnNames).toContain("id");
       expect(projectColumnNames).toContain("name");
-      expect(projectColumnNames).toContain("inputs");
-      expect(projectColumnNames).toContain("factor_overrides");
-      expect(projectColumnNames).toContain("selected_methodologies");
       expect(projectColumnNames).toContain("created_at");
       expect(projectColumnNames).toContain("updated_at");
+
+      const inputsCols = db.prepare("PRAGMA table_info(project_inputs)").all() as { name: string }[];
+      const inputColumnNames = inputsCols.map((c) => c.name);
+      expect(inputColumnNames).toContain("project_id");
+      expect(inputColumnNames).toContain("period");
+      expect(inputColumnNames).toContain("annual_h2_output_kg");
+      expect(inputColumnNames).toContain("fuels_json");
 
       const runsCols = db.prepare("PRAGMA table_info(runs)").all() as { name: string }[];
       expect(runsCols.map((c) => c.name)).toEqual(
@@ -115,6 +126,46 @@ describe("project-repository (S1.3)", () => {
     it("returns null when project does not exist", () => {
       const loaded = repo.getProjectById("non-existent-id");
       expect(loaded).toBeNull();
+    });
+
+    it("round-trips optional canonical input groups (ccs, coProducts, fugitive, optional steam/electricity fields)", () => {
+      const richInputs = {
+        ...minimalCanonicalInputs(),
+        electrolyserCapacityKw: 5000,
+        electricity: {
+          ...minimalCanonicalInputs().electricity,
+          otherKwhPerKgH2: 3,
+        },
+        steam: {
+          ...minimalCanonicalInputs().steam,
+          otherHeatMjPerKgH2: 1.2,
+          steamLciKgCo2PerMj: 0.02,
+        },
+        coProducts: [
+          {
+            productId: "oxygen",
+            lhvMjPerKg: 0,
+            massKg: 100,
+            massH2Kg: 1000,
+          },
+        ],
+        fugitiveNonCo2: {
+          methaneLeakageKgPerKgH2: 0.001,
+        },
+        ccs: {
+          eccsProcessKgCo2PerKgH2: 0.15,
+          co2SequestratedKgPerKgH2: 0.8,
+        },
+      };
+
+      const created = repo.createProject({
+        name: "Rich Inputs",
+        inputs: richInputs,
+      });
+
+      const loaded = repo.getProjectById(created.id);
+      expect(loaded).not.toBeNull();
+      expect(loaded!.inputs).toEqual(richInputs);
     });
   });
 
@@ -196,9 +247,9 @@ describe("project-repository (S1.3)", () => {
 
       const runs = repo.getRunsByProjectId(project.id);
       expect(runs).toHaveLength(2);
-      expect(runs.every((r) => r.projectId === project.id)).toBe(true);
+      expect(runs.every((r: { projectId: string }) => r.projectId === project.id)).toBe(true);
       expect(runs[0].createdAt <= runs[1].createdAt).toBe(true);
-      expect(runs.map((r) => r.id)).toEqual(expect.arrayContaining([run1.id, run2.id]));
+      expect(runs.map((r: { id: string }) => r.id)).toEqual(expect.arrayContaining([run1.id, run2.id]));
     });
 
     it("round-trips run with empty results array", () => {
@@ -249,13 +300,46 @@ describe("project-repository (S1.3)", () => {
   });
 
   describe("robustness", () => {
-    it("getProjectById returns fallback when stored JSON is invalid", () => {
+    it("getProjectById returns fallback when stored factor override value is invalid JSON", () => {
       const project = repo.createProject({ name: "Corrupt", inputs: minimalCanonicalInputs() });
-      db.prepare("UPDATE projects SET factor_overrides = ? WHERE id = ?").run("not json", project.id);
+      db.prepare(
+        "INSERT INTO project_factor_overrides (project_id, factor_key, factor_value_json) VALUES (?, ?, ?)"
+      ).run(project.id, "bad", "not json");
 
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
       const loaded = repo.getProjectById(project.id);
+      warnSpy.mockRestore();
+
       expect(loaded).not.toBeNull();
       expect(loaded!.factorOverrides).toEqual({});
+    });
+
+    it("getRunById returns fallback when runs.results column is invalid JSON", () => {
+      const project = repo.createProject({ name: "Run Corrupt" });
+      db.prepare(
+        "INSERT INTO runs (id, project_id, results, created_at) VALUES (?, ?, ?, ?)"
+      ).run("run-bad-results", project.id, "not valid json", new Date().toISOString());
+      db.prepare(
+        "INSERT INTO audit (id, run_id, payload, created_at) VALUES (?, ?, ?, ?)"
+      ).run("audit-bad", "run-bad-results", "{}", new Date().toISOString());
+
+      const loaded = repo.getRunById("run-bad-results");
+      expect(loaded).not.toBeNull();
+      expect(loaded!.results).toEqual([]);
+    });
+
+    it("getRunById returns fallback when audit.payload is invalid JSON", () => {
+      const project = repo.createProject({ name: "Audit Corrupt" });
+      db.prepare(
+        "INSERT INTO runs (id, project_id, results, created_at) VALUES (?, ?, ?, ?)"
+      ).run("run-bad-audit", project.id, JSON.stringify([minimalResult("india_ghci_v2025")]), new Date().toISOString());
+      db.prepare(
+        "INSERT INTO audit (id, run_id, payload, created_at) VALUES (?, ?, ?, ?)"
+      ).run("audit-bad-payload", "run-bad-audit", "not json", new Date().toISOString());
+
+      const loaded = repo.getRunById("run-bad-audit");
+      expect(loaded).not.toBeNull();
+      expect(loaded!.auditPayload).toEqual({});
     });
 
     it("updateProject updates only provided fields and leaves others unchanged", () => {

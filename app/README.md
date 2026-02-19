@@ -34,6 +34,11 @@ If `npm` is not found, Node may be installed without npm (e.g. minimal system pa
 
 ## Commands (run from this directory)
 
-- `npm install`
+- `npm install` — install dependencies (run once)
+- `npm run migrate` — apply pending DB migrations
 - `npm test` — run tests
 - `npm run coverage` — run tests and generate coverage report (95% target; see `docs/COVERAGE.md`)
+
+## Runtime direction
+
+This project is currently being aligned to a desktop runtime with Electron. The standalone HTTP server entrypoint has been removed from this app package. Domain and persistence modules remain available for integration with Electron main/renderer processes.

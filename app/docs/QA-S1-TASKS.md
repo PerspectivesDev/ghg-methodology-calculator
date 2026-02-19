@@ -61,6 +61,11 @@ Quality assurance review of the Foundation sprint tasks against current software
 - Timestamps via `now()`; UUIDs via `randomUUID()`.
 - No duplicated mapping code after introducing `rowToProject` and `rowToRun`.
 
+### Cursor rules (error handling)
+
+- **Don’t swallow**: `loadFactorOverrides` no longer silently skips malformed `factor_value_json`; it logs with `project_id` and `factor_key` (no value in log — security) and skips that row. Test suppresses `console.warn` in the corrupt-JSON case.
+- **parseJson**: JSDoc states that returning fallback on parse error is the intentional contract (robust persistence), not silent swallow of a bug.
+
 ---
 
 ## S1.4 — Project API (POST/GET/PUT /api/projects)

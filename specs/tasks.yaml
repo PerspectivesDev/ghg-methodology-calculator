@@ -49,6 +49,32 @@ tasks:
       - "95% coverage maintained"
     status: done
 
+  - id: S1.5
+    sprint_id: S1
+    title: Migration infrastructure — versioned SQL and runner
+    depends_on: [S1.3]
+    test_ref: "tests/persistence/migrations.test.ts — pending migrations apply in order, idempotent on re-run, and missing migrations directory fails fast with clear error."
+    description: "Add versioned SQL migrations and migration runner with schema_migrations table. Initialize DB by applying pending migrations at startup/test bootstrapping. Add migration CLI command and document migration step in app README."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+      - "Migrations are versioned and repeatable (idempotent re-run)"
+      - "Project can bootstrap schema from migrations in empty database"
+    status: done
+
+  - id: S1.6
+    sprint_id: S1
+    title: CI pipeline — run tests on push and expose README badge
+    depends_on: [S1.1]
+    test_ref: "GitHub Actions workflow triggers on push and pull_request, executes app test suite successfully, and README displays CI workflow badge."
+    description: "Add GitHub Actions CI workflow to run tests automatically on each push and pull request. Add a CI status badge to the repository README so contributors can see build health at a glance."
+    definition_of_done:
+      - "Workflow file exists under .github/workflows and runs app tests"
+      - "Workflow triggers on push and pull_request"
+      - "README includes CI status badge linked to workflow"
+      - "Test(s) pass"
+    status: done
+
   # --- S2: Factors and validation ---
   - id: S2.1
     sprint_id: S2

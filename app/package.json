@@ -9,7 +9,8 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "migrate": "tsx src/persistence/migrate.ts"
   },
   "keywords": [
     "ghg",
@@ -27,7 +28,8 @@
     "@vitest/coverage-v8": "^4.0.0",
     "supertest": "^7.2.2",
     "typescript": "^5.9.0",
-    "vitest": "^4.0.0"
+    "vitest": "^4.0.0",
+    "tsx": "^4.19.0"
   },
   "dependencies": {
     "better-sqlite3": "^12.6.2",

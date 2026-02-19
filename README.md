@@ -1,5 +1,7 @@
 # AI Scaffolding Project
 
+[![CI](https://github.com/PerspectivesDev/ghg-methodology-calculator/actions/workflows/ci.yml/badge.svg)](https://github.com/PerspectivesDev/ghg-methodology-calculator/actions/workflows/ci.yml)
+
 **Base scaffolding for all applications** — tech-stack agnostic. You use **specifications** to define a project; **sprints and tasks are YAML files** in `specs/`. Cursor rules, prompts, and templates are **generic and portable** — you bring them from project to project and extend them over time (e.g. add SOLID, YAGNI, DRY).
 
 ---

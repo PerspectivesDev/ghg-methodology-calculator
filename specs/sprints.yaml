@@ -8,8 +8,8 @@ sprints:
     name: Foundation — domain, persistence, project API
     work_package_ref: WP3-S1
     duration_weeks: 2
-    tasks: [S1.1, S1.2, S1.3, S1.4]
-    goal: "Project setup, canonical domain model, SQLite persistence, and project CRUD API in place; tests passing."
+    tasks: [S1.1, S1.2, S1.3, S1.4, S1.5, S1.6]
+    goal: "Project setup, canonical domain model, SQLite persistence with versioned migrations, project CRUD API, and CI test automation with visible status in place."
     status: complete
 
   - id: S2
