@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: ghg-methodology-calculator
+Version: 0.1.0
+Summary: Verification-ready lifecycle GHG intensity calculator for Hydrogen / PtX (India GHCI, Korea Clean H2, etc.)
+License: MIT
+Keywords: GHG,hydrogen,PtX,lifecycle,LCA,emissions,certification
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4; extra == "dev"
+Requires-Dist: pytest-cov>=4.1; extra == "dev"
+
+# ghg-methodology-calculator
