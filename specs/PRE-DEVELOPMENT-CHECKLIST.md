@@ -58,4 +58,4 @@ Complete before starting **S1.1** (project setup and test harness). When all ite
 
 ## Ready to start
 
-When the table sections above are complete (all ✓), start with **S1.1** in `specs/tasks.yaml`: create the test from `test_ref`, then implement project setup and test harness (Node 20, TypeScript, Vitest, coverage, layout per spec).
+When the table sections above are complete (all ✓), start with **S1.1** in `specs/tasks.yaml`: create the test from `test_ref`, then implement project setup and test harness (Node 20+, TypeScript, Vitest, coverage, layout per spec).

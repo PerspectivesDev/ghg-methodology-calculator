@@ -9,12 +9,12 @@ tasks:
     title: Project setup and test harness
     depends_on: []
     test_ref: "Vitest runs; coverage report generatable (e.g. tests/setup.test.ts or placeholder); 95% target documented."
-    description: "Initialize Node.js 20 + TypeScript project, Vitest, and coverage config. No app logic yet—runnable tests and coverage report. Align with spec project layout (src/, client/, tests/, config/)."
+    description: "Initialize Node.js 20+ (LTS) + TypeScript project, Vitest, and coverage config. No app logic yet—runnable tests and coverage report. Align with spec project layout (src/, client/, tests/, config/)."
     definition_of_done:
       - "Test(s) pass"
       - "95% coverage maintained (or explicit exception documented)"
       - "Coverage report exists for app code once implemented"
-    status: todo
+    status: done
 
   - id: S1.2
     sprint_id: S1

@@ -7,11 +7,12 @@ Thumbs.db
 *.swo
 *~
 
-# Project-specific (uncomment more as you add app code)
-# node_modules/
-# __pycache__/
-# *.pyc
-# bin/ obj/ .vs/
+# Project-specific
 .env
 *.db
-# dist/ build/
+
+# Application (app/ is all code; build artifacts stay under app/)
+app/node_modules/
+app/dist/
+app/coverage/
+app/.env

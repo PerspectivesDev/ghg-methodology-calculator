@@ -204,7 +204,7 @@ These inputs are normalized once per project and mapped into each methodology’
 
 ## 3. Tech stack
 
-- **Runtime / framework**: Node.js 20 LTS; TypeScript throughout.
+- **Runtime / framework**: Node.js 20+ LTS; TypeScript throughout.
 - **Backend / compute**: Node + TypeScript; calculation engine as a set of pure functions per methodology (adapters), orchestrated by a single runner.
 - **Data / persistence**: SQLite (file-based) for MVP: projects, canonical inputs, saved runs, audit records. Schema supports factor versioning and methodology version.
 - **Frontend**: React 18 + TypeScript; single-page app for project form, methodology selection, results, and comparison view. No heavy Excel-in-browser — export to file instead.

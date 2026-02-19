@@ -1,0 +1,28 @@
+{
+  "name": "ghg-methodology-calculator",
+  "version": "0.1.0",
+  "description": "GHG Methodology Calculator for Hydrogen / PtX — verification-ready lifecycle GHG intensity per methodology",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "ghg",
+    "hydrogen",
+    "methodology",
+    "carbon",
+    "certification"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^25.0.0",
+    "@vitest/coverage-v8": "^4.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.0.0"
+  }
+}
