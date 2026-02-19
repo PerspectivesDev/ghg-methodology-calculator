@@ -31,3 +31,7 @@ Rules:
 - Put the generated content into `specs/sprints.yaml` and `specs/tasks.yaml`.
 - Validate: no circular `depends_on`; every task ID in `sprints.tasks` exists in `tasks.yaml`; every `sprint_id` in tasks exists in sprints.
 - Refine with the agent: "Task S2.3 is too large, split into S2.3a and S2.3b with dependencies."
+
+## Multi-file spec
+
+If your spec is split (e.g. `product.md` + `modules.md` + `api.md`), paste the files in order into **[PASTE YOUR SPEC HERE]**: overview first (product.md), then tech/modules/API so the AI has full context. See `specs/spec/SPEC-STRUCTURE.md` for when and how to split.
