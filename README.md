@@ -4,6 +4,25 @@
 
 ---
 
+## This project: GHG Methodology Calculator (GIZ WP3)
+
+Tool for hydrogen/PtX project developers: enter project data once, select 1–5 GHG methodologies (India GHCI, South Korea Clean Hydrogen, and future standards), get lifecycle GHG intensity per methodology and a comparison view with verification-ready outputs.
+
+| Item | Location |
+|------|----------|
+| **Product spec** | `specs/spec/product.md` |
+| **Methodology inputs (Korea)** | `specs/spec/methodologies/KOREA-REQUIRED-INPUTS.md` |
+| **Methodology inputs (India)** | `specs/spec/methodologies/INDIA-GHCI-REQUIRED-INPUTS.md` |
+| **Sprints & tasks** | `specs/sprints.yaml`, `specs/tasks.yaml` |
+| **Assumptions & open questions** | `specs/assumptions-and-open-questions.md` |
+| **Pre-development checklist** | `specs/PRE-DEVELOPMENT-CHECKLIST.md` |
+| **First task** | **S1.1** — Project setup and test harness (`specs/tasks.yaml`) |
+| **Run instructions** | To be added in task S7.3 (README, .env.example, run steps). |
+
+Tech stack (from spec): Node.js 20, TypeScript, SQLite, React 18; Vitest; export to PDF, Excel, JSON.
+
+---
+
 ## Two parts
 
 1. **Portable agentic infrastructure** (reuse everywhere): Cursor rules, agents/prompts, docs and framework templates, sprint/task **schema**. Copy these into every project. **Nothing here is tech- or app-specific.**

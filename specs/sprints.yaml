@@ -1,23 +1,67 @@
-# Sprints — add your project's sprints here (from your spec)
+# Sprints — GHG Methodology Calculator (from specs/spec/product.md)
 # Schema: framework/sprints/SPRINT-SCHEMA.md
 # One sprint ≈ one work package (~2 weeks conventional effort).
 
 sprints:
   - id: S1
-    track: main
-    name: First deliverable
-    work_package_ref: WP-S1
+    track: core
+    name: Foundation — domain, persistence, project API
+    work_package_ref: WP3-S1
     duration_weeks: 2
-    tasks: [S1.1, S1.2]
-    goal: "Project setup and first feature in place; tests passing."
+    tasks: [S1.1, S1.2, S1.3, S1.4]
+    goal: "Project setup, canonical domain model, SQLite persistence, and project CRUD API in place; tests passing."
     status: draft
 
-  # Add more sprints from your spec. Example:
-  # - id: S2
-  #   track: main
-  #   name: Second work package
-  #   work_package_ref: WP-S2
-  #   duration_weeks: 2
-  #   tasks: [S2.1, S2.2]
-  #   goal: "…"
-  #   status: draft
+  - id: S2
+    track: core
+    name: Factors and validation
+    work_package_ref: WP3-S2
+    duration_weeks: 2
+    tasks: [S2.1, S2.2, S2.3]
+    goal: "Factor store with resolution priority, validation module (units, cross-field), and GET /api/factors."
+    status: draft
+
+  - id: S3
+    track: core
+    name: Methodology adapters
+    work_package_ref: WP3-S3
+    duration_weeks: 2
+    tasks: [S3.1, S3.2, S3.3]
+    goal: "Adapter interface, India GHCI adapter, and Korea Clean H2 adapter; calculation logic test-covered."
+    status: draft
+
+  - id: S4
+    track: core
+    name: Calculation engine and compute API
+    work_package_ref: WP3-S4
+    duration_weeks: 2
+    tasks: [S4.1, S4.2]
+    goal: "Orchestration runs adapters, writes audit trail; POST compute and GET run APIs work end-to-end."
+    status: draft
+
+  - id: S5
+    track: core
+    name: Export (JSON, Excel, PDF)
+    work_package_ref: WP3-S5
+    duration_weeks: 2
+    tasks: [S5.1, S5.2, S5.3, S5.4]
+    goal: "Verification-ready export in JSON, Excel, and PDF; export API returns file or JSON."
+    status: draft
+
+  - id: S6
+    track: frontend
+    name: UI — forms, compute, results, manual
+    work_package_ref: WP3-S6
+    duration_weeks: 2
+    tasks: [S6.1, S6.2, S6.3, S6.4, S6.5]
+    goal: "React app: project forms, methodology selection, compute trigger, results/comparison view, export trigger, in-tool user manual."
+    status: draft
+
+  - id: S7
+    track: main
+    name: Deliverable — example project and case study
+    work_package_ref: WP3-S7
+    duration_weeks: 2
+    tasks: [S7.1, S7.2, S7.3]
+    goal: "Bundled best-practice example project, test-run with WP2 case study data, README and run instructions."
+    status: draft

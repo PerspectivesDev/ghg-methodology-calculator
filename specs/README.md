@@ -36,3 +36,15 @@ Full schema: `framework/sprints/SPRINT-SCHEMA.md`, `framework/tasks/TASK-SCHEMA.
 
 - **Portable** (reuse in every project): `.cursor/rules/`, `agents/`, `docs/`, `framework/` (schema and templates only). Copy these.
 - **Project-specific** (this app): `specs/` (your spec + `sprints.yaml` + `tasks.yaml`) and your application code. Replace per project.
+
+---
+
+## Ready to start (this project)
+
+- **Spec**: `spec/product.md` — goals, scope, PDF-first calculation, methodology data model, API, modules.
+- **Methodology docs**: `spec/methodologies/KOREA-REQUIRED-INPUTS.md`, `spec/methodologies/INDIA-GHCI-REQUIRED-INPUTS.md`.
+- **Sprints**: `sprints.yaml` — S1–S7; **tasks**: `tasks.yaml` — S1.1–S7.3; no circular `depends_on`.
+- **Assumptions & open questions**: `assumptions-and-open-questions.md` — pre-build assumptions and GIZ open questions.
+- **Pre-development checklist**: `PRE-DEVELOPMENT-CHECKLIST.md` — confirm all items before S1.1.
+- **First task**: **S1.1** — Project setup and test harness (Node 20, TypeScript, Vitest, coverage). Create test from `test_ref` first, then implement.
+- **How to add a new standard**: See `spec/product.md` §10 — add methodology doc under `spec/methodologies/` + new adapter; register.

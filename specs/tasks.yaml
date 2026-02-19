@@ -1,28 +1,279 @@
-# Tasks — add your project's tasks here (from your spec)
+# Tasks — GHG Methodology Calculator (from specs/spec/product.md)
 # Schema: framework/tasks/TASK-SCHEMA.md
-# For each task: create the test from test_ref first, then implement.
+# For each task: create the test from test_ref first, then implement. No circular depends_on.
 
 tasks:
+  # --- S1: Foundation ---
   - id: S1.1
     sprint_id: S1
     title: Project setup and test harness
     depends_on: []
-    test_ref: "Test runner executes; coverage report can be generated (stack-appropriate: e.g. xUnit, pytest, Jest)."
-    description: "Initialize project structure and test runner for your stack. Ensure 95% coverage target is measurable. No app logic yet—just runnable tests and coverage."
+    test_ref: "Vitest runs; coverage report generatable (e.g. tests/setup.test.ts or placeholder); 95% target documented."
+    description: "Initialize Node.js 20 + TypeScript project, Vitest, and coverage config. No app logic yet—runnable tests and coverage report. Align with spec project layout (src/, client/, tests/, config/)."
     definition_of_done:
       - "Test(s) pass"
-      - "Coverage report exists (target 95% for app code once implemented)"
+      - "95% coverage maintained (or explicit exception documented)"
+      - "Coverage report exists for app code once implemented"
     status: todo
 
   - id: S1.2
     sprint_id: S1
-    title: First feature or slice
+    title: Domain model — canonical inputs and methodology result types
     depends_on: [S1.1]
-    test_ref: "Tests define the behavior of the first feature (contract and/or behavior); implement until they pass."
-    description: "Implement the first feature or vertical slice as defined in your spec. Write tests first, then implement. Follow your stack's best practices."
+    test_ref: "tests/domain/canonical-inputs.test.ts and tests/domain/methodology-result.test.ts (or src/domain/*.test.ts)."
+    description: "Implement canonical project input types that cover all inputs required by the two PDFs for exact calculation (Korea: see KOREA-REQUIRED-INPUTS.md; India: feedstock, electricity, fuel, steam, input materials, co-product allocation). Include methodology result types (breakdown, total, unit, warnings, errors) and value objects per product spec Methodology Data Model. No persistence yet."
     definition_of_done:
       - "Test(s) pass"
-      - "95% coverage maintained (or explicit exception documented)"
+      - "95% coverage maintained"
     status: todo
 
-  # Add more tasks from your spec. Keep depends_on acyclic.
+  - id: S1.3
+    sprint_id: S1
+    title: Persistence layer — SQLite schema for projects, runs, audit
+    depends_on: [S1.2]
+    test_ref: "tests/persistence/project-repository.test.ts (or equivalent); schema supports inputs, factorOverrides, runs, audit records."
+    description: "SQLite schema for projects (id, name, inputs, factorOverrides, selectedMethodologies, timestamps), calculation runs, and audit records. Repository to save/load project and runs."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  - id: S1.4
+    sprint_id: S1
+    title: Project API — POST/GET/PUT /api/projects
+    depends_on: [S1.3]
+    test_ref: "tests/api/projects.test.ts — create project, get by id, update (inputs, factorOverrides, selectedMethodologies); 400 on validation error, 404 when missing."
+    description: "REST handlers: POST /api/projects (body name, inputs, factorOverrides); GET /api/projects/:id; PUT /api/projects/:id. Validate inputs; return JSON per spec. Use validation module stub if needed."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  # --- S2: Factors and validation ---
+  - id: S2.1
+    sprint_id: S2
+    title: Factor store — resolution priority and versioning
+    depends_on: [S1.2]
+    test_ref: "tests/factor-store/factor-store.test.ts — resolve factor with priority user override → methodology default → tool default; version ids stored."
+    description: "Factor store: provide Basic Data Provided and default factors by methodology and version. Resolution order (1) user override per project, (2) methodology default / Basic Data Provided, (3) tool default. Read from config/DB; support project-level overrides."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  - id: S2.2
+    sprint_id: S2
+    title: Validation module — required fields, units, cross-field
+    depends_on: [S1.2]
+    test_ref: "tests/validation/canonical-inputs.validation.test.ts — required fields, unit consistency, electricity breakdown sums, allocation logic, missing factors; explainable error messages."
+    description: "Validate canonical inputs: required fields, ranges, units, unit consistency; cross-field (electricity breakdown sums, allocation logic, missing factors). Return structured, explainable errors. No silent defaults for required site data."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  - id: S2.3
+    sprint_id: S2
+    title: GET /api/factors
+    depends_on: [S2.1]
+    test_ref: "tests/api/factors.test.ts — GET /api/factors returns list of factor sets (methodologyId, factorSetId, version, effectiveDate)."
+    description: "API: GET /api/factors returns available factor sets per methodology and version for UI and audit."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  # --- S3: Methodology adapters ---
+  - id: S3.1
+    sprint_id: S3
+    title: Adapter interface and MethodologyResult contract
+    depends_on: [S1.2]
+    test_ref: "tests/adapters/adapter-interface.test.ts — adapter implements compute(projectInputs, factorProvider) returning MethodologyResult (components, total, unit, warnings, errors)."
+    description: "Define common adapter interface: required inputs schema, output schema (MethodologyResult: breakdown, total, unit, inputsUsed, factorsUsed, warnings, errors). No concrete methodology yet."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  - id: S3.2
+    sprint_id: S3
+    title: India GHCI adapter — electrolysis pathway
+    depends_on: [S3.1, S2.1, S2.2]
+    test_ref: "tests/adapters/india-ghci.test.ts — compute returns total and breakdown (feedstock, electricity, fuel, steam, input materials, co-product allocation); uses factorProvider; records equation version in metadata; calculation logic matches India PDF."
+    description: "India GHCI electrolysis adapter: implement equations exactly as in the Indian Green Hydrogen Certification Scheme (April 2025) PDF (pages 19–23). Map canonical inputs to methodology inputs; implement total and component emissions per spec Methodology Data Model. Align equation symbols and formulas with the official PDF when available. Use factor store for resolution; return warnings/errors for missing data. No ad hoc formulas—only PDF-based calculations."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+      - "Calculation logic matches India scheme equations (PDF pages 19–23)"
+    status: todo
+
+  - id: S3.3
+    sprint_id: S3
+    title: Korea Clean H2 adapter — Etotal structure
+    depends_on: [S3.1, S2.1, S2.2]
+    test_ref: "tests/adapters/korea-clean-h2.test.ts — compute returns Etotal and breakdown (Efeedstock supply, Eenergy supply, Einput materials, Eprocess, Efugitive non-CO2, EC-credit, EC-tracking, AF, ECCS process, ECO2 sequestrated); AF first-class; formulas A-1 through G-3 implemented per PDF."
+    description: "Korea Clean Hydrogen adapter: implement Etotal and all components exactly as in Attached Form 1 (Operational Rules 2025.4.24). Use formulas A-1–A-4, B-1–B-6, C-1, D-1–D-2, E-1, E-2, F-1, G-1–G-3 and symbol definitions from the PDF. Reference specs/spec/methodologies/KOREA-REQUIRED-INPUTS.md for required inputs. Use factor store for Basic Data Provided and defaults; return AF as first-class breakdown field; rounding per Article 7 (4th decimal sum, 3rd for result, 2nd for grade). No ad hoc formulas—only PDF-based calculations."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+      - "Calculation logic matches Korea Attached Form 1 (formulas A-1 through G-3)"
+    status: todo
+
+  # --- S4: Calculation engine and compute API ---
+  - id: S4.1
+    sprint_id: S4
+    title: Calculation orchestration — run adapters, audit, comparison
+    depends_on: [S3.2, S3.3, S2.1, S1.3]
+    test_ref: "tests/orchestration/calculation-engine.test.ts — given project and methodology ids, runs adapters, returns results array and comparison payload, writes audit record (inputs, factor versions, equation versions, timestamp)."
+    description: "Orchestration: load project and factor overrides; for each selected methodology call adapter; aggregate results and build comparison view; write run and audit record to persistence (inputs, factor versions, equation versions, timestamp)."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  - id: S4.2
+    sprint_id: S4
+    title: Compute API — POST compute, GET run
+    depends_on: [S4.1, S1.4]
+    test_ref: "tests/api/compute.test.ts — POST /api/projects/:id/compute (body methodologies[]) returns runId, results, comparison, auditSummary; GET /api/projects/:id/runs/:runId returns full result and audit; 422 on calculation failure."
+    description: "POST /api/projects/:id/compute with body { methodologies: string[] }; response runId, results (per methodology: unit, total, breakdown, inputsUsed, factorsUsed, warnings, errors), comparison, auditSummary. GET run returns same plus full audit. Validate project exists and methodologies selected."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  # --- S5: Export ---
+  - id: S5.1
+    sprint_id: S5
+    title: Export — JSON (machine-readable audit)
+    depends_on: [S4.1]
+    test_ref: "tests/export/json-export.test.ts — buildJSONAudit(run) produces JSON with inputs, factorsUsed, breakdown, allocation logic, audit info."
+    description: "Export module: generate machine-readable JSON audit from run result (inputs, factors used, breakdown per methodology, allocation logic, audit metadata)."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  - id: S5.2
+    sprint_id: S5
+    title: Export — Excel (verification-ready report)
+    depends_on: [S4.1]
+    test_ref: "tests/export/excel-export.test.ts — buildExcelReport(run) produces Excel file with inputs, factor versions, intermediate steps, comparison table, audit info."
+    description: "Export module: generate verification-ready Excel report (e.g. ExcelJS) with inputs, factor versions, intermediate steps per methodology, comparison table, audit info."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  - id: S5.3
+    sprint_id: S5
+    title: Export — PDF (verification-ready report)
+    depends_on: [S4.1]
+    test_ref: "tests/export/pdf-export.test.ts — buildPDFReport(run) produces PDF with same content as Excel (inputs, breakdown, comparison, audit)."
+    description: "Export module: generate verification-ready PDF report (e.g. server-side template or react-pdf) with inputs, factor versions, intermediate steps, comparison, audit info."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  - id: S5.4
+    sprint_id: S5
+    title: Export API — GET .../runs/:runId/export?format=pdf|excel|json
+    depends_on: [S5.1, S5.2, S5.3]
+    test_ref: "tests/api/export.test.ts — GET /api/projects/:id/runs/:runId/export?format=pdf|excel|json returns file download or JSON body; 404 when run missing."
+    description: "GET /api/projects/:id/runs/:runId/export with query format=pdf|excel|json; response file download (PDF/Excel) or JSON object; 404 if run not found."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained"
+    status: todo
+
+  # --- S6: UI ---
+  - id: S6.1
+    sprint_id: S6
+    title: Frontend shell — React app, routing, project list/create
+    depends_on: [S1.4]
+    test_ref: "client app boots; optional E2E or smoke test (Playwright/React Testing Library) for load and create project."
+    description: "React 18 + TypeScript frontend: app shell, routing, project list and create project flow. Call project API; no forms for full inputs yet."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained (or explicit exception for UI)"
+    status: todo
+
+  - id: S6.2
+    sprint_id: S6
+    title: Project input forms — canonical inputs and factor overrides
+    depends_on: [S6.1, S2.2]
+    test_ref: "UI tests for project form: required fields per methodology (see KOREA-REQUIRED-INPUTS.md and India structure), unit fields, validation errors displayed; factor overrides section; save/load project."
+    description: "Forms must collect all user inputs required by the two PDFs so that carbon emissions can be calculated exactly. Cover canonical inputs: grid/renewable/other electricity, electrolyser capacity, annual H2 output, water (feedstock), steam, fuels, input materials (per material), co-products (LHV, mass, carbon content where applicable), fugitive/CCS if applicable; and factor overrides. Align fields with specs/spec/methodologies/KOREA-REQUIRED-INPUTS.md for Korea and India Methodology Data Model. Display validation errors from API; save/load project."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained (or explicit exception for UI)"
+      - "All inputs required by Korea and India PDFs for exact calculation are collectible via forms"
+    status: todo
+
+  - id: S6.3
+    sprint_id: S6
+    title: Methodology selection and compute trigger
+    depends_on: [S6.2, S4.2]
+    test_ref: "UI tests: select 1–5 methodologies, trigger compute, loading/error state; result summary visible after success."
+    description: "Methodology selector (India GHCI, Korea Clean H2; versioned ids); button to run compute; call POST compute API; show loading and errors; on success show result summary (e.g. totals per methodology)."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained (or explicit exception for UI)"
+    status: todo
+
+  - id: S6.4
+    sprint_id: S6
+    title: Results view — breakdown, comparison, export trigger
+    depends_on: [S6.3, S5.4]
+    test_ref: "UI tests: results show per-methodology breakdown and comparison table; export buttons (PDF, Excel, JSON) trigger download or display."
+    description: "Results view: per-methodology breakdown (intermediate components), side-by-side comparison table, audit summary. Export buttons for PDF, Excel, JSON; call export API and handle file/JSON response."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained (or explicit exception for UI)"
+    status: todo
+
+  - id: S6.5
+    sprint_id: S6
+    title: In-tool user manual
+    depends_on: [S6.1]
+    test_ref: "Manual content present and reachable in UI (e.g. help panel or dedicated route); covers purpose, scope, step-by-step, interpretation, limitations, tier approaches."
+    description: "Integrate short user manual into tool: purpose, scope, step-by-step data entry, interpretation of results, limitations and assumptions, error-prone areas and standard factors vs measurements (tier approaches)."
+    definition_of_done:
+      - "Test(s) pass"
+      - "Content complete and accessible in UI"
+    status: todo
+
+  # --- S7: Deliverable ---
+  - id: S7.1
+    sprint_id: S7
+    title: Bundled best-practice example project
+    depends_on: [S6.4]
+    test_ref: "Example project data loads; compute runs and produces verification-ready output; documented in README or in-tool."
+    description: "Create and bundle one example project (ideally WP2 case study or synthetic) with canonical inputs and factor overrides; ship as seed data or pre-loaded project; document for users."
+    definition_of_done:
+      - "Example project loads and runs"
+      - "Documented for users"
+    status: todo
+
+  - id: S7.2
+    sprint_id: S7
+    title: Test-run with WP2 case study data
+    depends_on: [S7.1]
+    test_ref: "Acceptance: run tool with WP2 case study data (when available); results consistent and verification-ready; issues logged and fixed."
+    description: "Test-run tool with data from WP2 case studies; verify functionality and consistency of results; fix issues; document any assumptions or limitations."
+    definition_of_done:
+      - "Test(s) pass"
+      - "Case study run documented"
+    status: todo
+
+  - id: S7.3
+    sprint_id: S7
+    title: README, .env.example, run instructions
+    depends_on: [S4.2]
+    test_ref: "README and .env.example exist; run instructions allow a new developer to start backend and frontend and run a compute."
+    description: "Documentation: README (purpose, scope, how to run), .env.example with placeholders (DB_PATH, PORT; no secrets); step-by-step run instructions for backend and frontend."
+    definition_of_done:
+      - "README and .env.example complete"
+      - "Run instructions verified"
+    status: todo
