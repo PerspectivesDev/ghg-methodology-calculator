@@ -206,7 +206,7 @@ These inputs are normalized once per project and mapped into each methodology’
 
 - **Runtime / framework**: Node.js 20+ LTS; TypeScript throughout.
 - **Backend / compute**: Node + TypeScript; calculation engine as a set of pure functions per methodology (adapters), orchestrated by a single runner.
-- **Data / persistence**: SQLite (file-based) for MVP: projects, canonical inputs, saved runs, audit records. Schema supports factor versioning and methodology version.
+- **Data / persistence**: SQLite (file-based) for MVP: projects, canonical inputs, saved runs, audit records. Schema supports factor versioning and methodology version. **Persistence best practice:** store structured domain data (e.g. canonical inputs, factor overrides) in **normalized tables with explicit columns** (one column per field or logical group); same schema for every project/run. Do not store fixed-schema payloads as a single JSON/TEXT column unless there is a documented exception (e.g. opaque audit payload).
 - **Frontend**: React 18 + TypeScript; single-page app for project form, methodology selection, results, and comparison view. No heavy Excel-in-browser — export to file instead.
 - **Tests**: Vitest (unit + integration); coverage target 95% for calculation and validation code. Playwright or React Testing Library for critical UI flows (save/load, compute, export).
 - **Export**: PDF (e.g. react-pdf or server-side template); Excel (e.g. ExcelJS) for tabular report; JSON for machine-readable audit.

@@ -1,0 +1,29 @@
+---
+description: Relational persistence — normalized schema, explicit columns; avoid JSON blobs for fixed-schema data
+globs: "**/schema*.ts","**/persistence/**/*.ts","**/*repository*.ts","**/migrations/**/*"
+alwaysApply: false
+---
+
+# Persistence and schema best practices
+
+When using a **relational database** (SQLite, PostgreSQL, etc.) for this project:
+
+## Normalized schema for structured data
+
+- **Prefer explicit columns over JSON blobs**: For domain data that has a fixed, known structure (e.g. canonical project inputs, factor overrides, run results), store it in **normalized tables** with **one column per field** (or per logical group in child tables). Every row shares the same schema; the database enforces and exposes structure.
+- **Same schema for every entity**: All projects (or all runs, etc.) should have the same table structure. Do not store structured payloads as a single TEXT/JSON column when the shape is defined in the domain and used for calculation or querying.
+- **JSON-in-column only when justified**: Use a JSON (or TEXT) column only when (1) the structure is truly variable or external, or (2) the data is opaque to the DB (e.g. audit payload). If used, document the exception in the spec or in `docs/COVERAGE.md` / an ADR.
+
+## Why
+
+- **Explicit over implicit**: Schema visible in the DB; no “document in a cell” for core domain data.
+- **Single source of truth**: The database schema is the authority for structure; application types map to columns.
+- **Queryability and integrity**: SQL can filter, aggregate, and constrain on individual fields; DB constraints apply.
+
+## When adding or changing persistence
+
+1. Define tables with explicit columns for each stored field (or normalized child tables).
+2. Map domain types to rows/columns in the repository; avoid serializing whole objects to a single JSON column for core entities.
+3. If you consider JSON-in-column, ask: “Is this structure fixed and used for calculation or reporting?” If yes, use columns.
+
+Summary: For relational persistence in this project, use normalized tables and explicit columns for structured domain data; avoid JSON-in-column unless there is a documented exception.

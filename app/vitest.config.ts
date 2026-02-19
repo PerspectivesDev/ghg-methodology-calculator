@@ -18,6 +18,7 @@ export default defineConfig({
       exclude: [
         "**/*.test.ts",
         "**/*.test.tsx",
+        "src/persistence/migrate.ts",
         "dist",
         "node_modules",
       ],

@@ -6,4 +6,4 @@
 - Run: `npm run coverage` (from `app/`). Report: `app/coverage/index.html`.
 - Exceptions (e.g. a file excluded from threshold) must be documented here and in config.
 
-No exceptions currently.
+- `src/persistence/migrate.ts` — CLI entry point (DB path, runMigrations, close); run manually for migrations. Schema application is covered via `initSchema` and migration tests.
