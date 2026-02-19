@@ -1,0 +1,17 @@
+# OS and IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Project-specific (optional: uncomment if you add app code here)
+# node_modules/
+# __pycache__/
+# *.pyc
+# bin/ obj/ .vs/
+# .env
+# *.db
+# dist/ build/

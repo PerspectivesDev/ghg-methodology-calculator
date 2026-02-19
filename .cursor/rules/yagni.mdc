@@ -1,0 +1,14 @@
+---
+description: YAGNI — You Aren't Gonna Need It
+alwaysApply: true
+---
+
+# YAGNI (You Aren't Gonna Need It)
+
+- **Do not add** behavior or structure "for later" or "in case we need it." Add it when a **current** requirement or task needs it.
+- **No speculative code**: No extra parameters, optional hooks, or abstraction layers until a concrete use case exists.
+- **Refactor when needed**: When a second use case appears, then extract the abstraction or shared code. One use case → keep it simple.
+- **Specs and tasks**: If it's not in the spec or in a task, don't build it yet. Prioritize the plan (sprints/tasks), not hypothetical futures.
+- **APIs**: Expose only what current callers need. Expand the API when a new caller has a real need.
+
+Exception: Document or stub **planned** extension points in the spec or architecture when they are agreed and scheduled; still implement only when the task is active.

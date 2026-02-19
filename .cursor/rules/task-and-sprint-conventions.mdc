@@ -1,0 +1,36 @@
+---
+description: Task dependencies, sprint = work package, estimation; specs YAML is source of truth
+alwaysApply: false
+globs: "**/specs/**/*.yaml,**/PLAN.md,**/sprints/**,**/tasks/**,**/work-packages/**"
+---
+
+# Task and Sprint Conventions
+
+## Source of truth: specs YAML
+
+- **Sprints**: Defined in `specs/sprints.yaml` (list of sprint objects). Schema: `framework/sprints/SPRINT-SCHEMA.md`.
+- **Tasks**: Defined in `specs/tasks.yaml` (list of task objects). Schema: `framework/tasks/TASK-SCHEMA.md`.
+- Plan and implement from these files. When editing specs, keep IDs and `depends_on` consistent.
+
+## Tasks
+
+- **ID**: Unique (e.g. `S1.1`, `S2.3`). Use sprint prefix when possible.
+- **depends_on**: Task IDs that must be done first. No circular dependencies.
+- **test_ref**: What test defines success; create/update this test before implementation.
+- **Definition of done**: Test(s) pass, 95% coverage maintained, code reviewed (if applicable).
+
+## Sprints
+
+- **One sprint ≈ one work package**: Typically ~2 weeks of conventional coder effort.
+- **tasks** (in sprint): List of task IDs in dependency order; all must pass by end of sprint.
+- **goal**: One-sentence deliverable for the sprint.
+
+## Tracks
+
+- **track** = theme (e.g. core, api, frontend). Sprints belong to a track.
+- Tracks can run in parallel when dependencies allow.
+
+## Estimation
+
+- Provide **historical context** (e.g. "3 people, 2 months for similar scope") when asking for estimates.
+- Ask for estimate in **days with agentic/AI-assisted development**; use as a range and re-estimate as you go.

@@ -1,0 +1,31 @@
+---
+description: Test-first workflow and 95% coverage target
+alwaysApply: true
+---
+
+# Test-First and Coverage
+
+## Test-First
+
+- **Before starting a task**: Create or update the test(s) that define success for that task. The test is the specification.
+- **Then implement**: Implement until those tests pass. Do not move to the next task until tests are green.
+- **Refactor safely**: After green, refactor with tests as safety net; keep tests passing.
+
+## Coverage Target: 95%
+
+- Aim for **95% test coverage** (line/branch as appropriate for the stack). Coverage is part of the definition of done.
+- **Critical paths**: Auth, payments, data persistence, and external integrations must have tests.
+- **Cover edge cases**: Empty inputs, errors, timeouts, and invalid state in tests.
+
+## Test Quality
+
+- Tests are deterministic: no flake from time, randomness, or shared state.
+- One logical assertion per test when possible; name tests by behavior (e.g. "returns 404 when resource missing").
+- Prefer fast unit tests; use integration/e2e only where necessary.
+
+## When Adding a Feature
+
+1. Add or update tests for the new behavior.
+2. Run tests (expect failure or missing coverage).
+3. Implement until tests pass and coverage meets target.
+4. Commit tests and implementation together.

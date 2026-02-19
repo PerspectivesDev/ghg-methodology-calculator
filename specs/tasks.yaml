@@ -1,0 +1,28 @@
+# Tasks — add your project's tasks here (from your spec)
+# Schema: framework/tasks/TASK-SCHEMA.md
+# For each task: create the test from test_ref first, then implement.
+
+tasks:
+  - id: S1.1
+    sprint_id: S1
+    title: Project setup and test harness
+    depends_on: []
+    test_ref: "Test runner executes; coverage report can be generated (stack-appropriate: e.g. xUnit, pytest, Jest)."
+    description: "Initialize project structure and test runner for your stack. Ensure 95% coverage target is measurable. No app logic yet—just runnable tests and coverage."
+    definition_of_done:
+      - "Test(s) pass"
+      - "Coverage report exists (target 95% for app code once implemented)"
+    status: todo
+
+  - id: S1.2
+    sprint_id: S1
+    title: First feature or slice
+    depends_on: [S1.1]
+    test_ref: "Tests define the behavior of the first feature (contract and/or behavior); implement until they pass."
+    description: "Implement the first feature or vertical slice as defined in your spec. Write tests first, then implement. Follow your stack's best practices."
+    definition_of_done:
+      - "Test(s) pass"
+      - "95% coverage maintained (or explicit exception documented)"
+    status: todo
+
+  # Add more tasks from your spec. Keep depends_on acyclic.

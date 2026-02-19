@@ -1,0 +1,38 @@
+---
+description: SOLID principles (tech-stack agnostic)
+alwaysApply: true
+---
+
+# SOLID Principles
+
+Apply these regardless of language or framework. Adapt naming (class/module/component) to your stack.
+
+## S — Single Responsibility
+
+- One module, class, or component has **one reason to change** (one responsibility).
+- If you can describe it with "and", split it. Example: "validates input **and** sends email" → two units.
+- Prefer small, focused units over large "god" objects or modules.
+
+## O — Open/Closed
+
+- **Open for extension**: New behavior via new code (e.g. new implementations, plugins).
+- **Closed for modification**: Avoid changing existing working code to add behavior; extend via interfaces/abstractions.
+- Prefer composition and dependency injection over branching inside existing types.
+
+## L — Liskov Substitution
+
+- Subtypes must be substitutable for their base type without breaking callers.
+- If a subtype changes preconditions, postconditions, or side effects in a way callers rely on, fix the design.
+- Prefer "is-a" in behavior, not just in name.
+
+## I — Interface Segregation
+
+- Callers should not depend on methods they do not use. Prefer **small, role-specific interfaces** over one large interface.
+- Split broad interfaces into focused ones; implement only what each client needs.
+- Reduces coupling and makes changes safer.
+
+## D — Dependency Inversion
+
+- Depend on **abstractions** (interfaces, contracts), not concrete implementations.
+- High-level logic should not import or instantiate low-level details; both should depend on abstractions.
+- Enables testing (mocks) and swapping implementations without changing callers.

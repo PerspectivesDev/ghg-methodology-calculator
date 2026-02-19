@@ -1,0 +1,34 @@
+---
+description: General software engineering standards (tech-stack agnostic)
+alwaysApply: true
+---
+
+# General Software Engineering Rules
+
+These rules apply to all projects derived from this scaffolding, regardless of tech stack.
+
+## Design & Boundaries
+
+- **One responsibility per module**: Each module has a single, clearly stated responsibility. No overlapping concerns.
+- **Explicit interfaces**: Communication between modules is via defined interfaces (API, events, files). Document inputs, outputs, and error cases.
+- **No hidden coupling**: Avoid shared mutable state across modules. Prefer passing data or events.
+
+## Code Quality
+
+- **Readable names**: Names reflect intent. Prefer clarity over brevity.
+- **Small units**: Functions/methods do one thing; keep them short and testable.
+- **Fail fast**: Validate inputs at boundaries; return clear errors; log context for debugging.
+
+## Dependencies & Tasks
+
+- **Task dependencies**: Before implementing a task, ensure its dependencies are done. No cycles in the dependency graph.
+- **Test before implement**: For each task, create or update the test(s) that define success, then implement until tests pass.
+
+## Documentation
+
+- **Public APIs**: Document purpose, parameters, return values, and possible errors.
+- **Decisions**: Record non-obvious architectural or tech decisions in ADRs or architecture docs.
+
+## Consistency
+
+- Follow project-specific conventions (see stack-specific rules if present). When in doubt, match existing style in the same module.

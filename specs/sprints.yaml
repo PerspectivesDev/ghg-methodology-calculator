@@ -1,0 +1,23 @@
+# Sprints — add your project's sprints here (from your spec)
+# Schema: framework/sprints/SPRINT-SCHEMA.md
+# One sprint ≈ one work package (~2 weeks conventional effort).
+
+sprints:
+  - id: S1
+    track: main
+    name: First deliverable
+    work_package_ref: WP-S1
+    duration_weeks: 2
+    tasks: [S1.1, S1.2]
+    goal: "Project setup and first feature in place; tests passing."
+    status: draft
+
+  # Add more sprints from your spec. Example:
+  # - id: S2
+  #   track: main
+  #   name: Second work package
+  #   work_package_ref: WP-S2
+  #   duration_weeks: 2
+  #   tasks: [S2.1, S2.2]
+  #   goal: "…"
+  #   status: draft
