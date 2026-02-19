@@ -25,7 +25,7 @@ tasks:
     definition_of_done:
       - "Test(s) pass"
       - "95% coverage maintained"
-    status: todo
+    status: done
 
   - id: S1.3
     sprint_id: S1
@@ -36,7 +36,7 @@ tasks:
     definition_of_done:
       - "Test(s) pass"
       - "95% coverage maintained"
-    status: todo
+    status: done
 
   - id: S1.4
     sprint_id: S1
@@ -47,7 +47,7 @@ tasks:
     definition_of_done:
       - "Test(s) pass"
       - "95% coverage maintained"
-    status: todo
+    status: done
 
   # --- S2: Factors and validation ---
   - id: S2.1
